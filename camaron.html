@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camarón Especial</title>
+    <style>
+        :root {
+            --celeste: #87CEEB;
+            --celeste-oscuro: #4682B4;
+        }
+
+        body {
+            font-family: 'Dancing Script', cursive;
+            background: linear-gradient(160deg, #87CEEB 0%, #E0F6FF 100%);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .camaron-container {
+            position: relative;
+            text-align: center;
+        }
+
+        .texto-camaron {
+            font-size: 8vw;
+            color: var(--celeste-oscuro);
+            margin: 20px;
+            animation: flotar 3s ease-in-out infinite;
+            text-shadow: 2px 2px 4px rgba(70, 130, 180, 0.3);
+        }
+
+        @keyframes flotar {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .boton-volver {
+            position: fixed;
+            bottom: 30px;
+            padding: 15px 30px;
+            background: rgba(135, 206, 235, 0.3);
+            border: 2px solid var(--celeste-oscuro);
+            color: var(--celeste-oscuro);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .boton-volver:hover {
+            background: var(--celeste-oscuro);
+            color: white;
+            transform: scale(1.05);
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="camaron-container">
+        <div class="texto-camaron">CAMARÓN</div>
+        <div class="texto-camaron">CAMARÓN</div>
+        <div class="texto-camaron">CAMARÓN</div>
+        <div class="texto-camaron">CAMARÓN</div>
+    </div>
+
+    <a href="main.html" class="boton-volver">Volver al Álbum</a>
+</body>
+</html>
