@@ -57,10 +57,35 @@
             color: white;
             transform: scale(1.05);
         }
+
+        /* Estilos para el reproductor de audio */
+        .reproductor-musica {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .reproductor-musica audio {
+            display: block;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Reproductor de música -->
+    <div class="reproductor-musica">
+        <audio autoplay loop controls>
+            <source src="Dos Oruguitas.mp3" type="audio/mpeg">
+            Tu navegador no soporta audio HTML5
+        </audio>
+    </div>
+
+    <!-- Contenido principal -->
     <div class="camaron-container">
         <div class="texto-camaron">CAMARÓN</div>
         <div class="texto-camaron">CAMARÓN</div>
