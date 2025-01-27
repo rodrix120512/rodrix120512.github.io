@@ -57,15 +57,39 @@
             color: white;
             transform: scale(1.05);
         }
+
+        /* Estilos para el botón de música */
+        .boton-musica {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            padding: 12px 25px;
+            background: rgba(135, 206, 235, 0.3);
+            border: 2px solid var(--celeste-oscuro);
+            color: var(--celeste-oscuro);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .boton-musica:hover {
+            background: var(--celeste-oscuro);
+            color: white;
+            transform: scale(1.05);
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Reproductor oculto -->
-    <audio autoplay loop style="display: none;">
+    <audio id="musicaFondo" loop>
         <source src="Dos Oruguitas.mp3" type="audio/mpeg">
         Tu navegador no soporta audio HTML5
     </audio>
+
+    <!-- Botón de activación de música -->
+    <button class="boton-musica" onclick="toggleMusica()">🎵 Activar Música</button>
 
     <!-- Contenido principal -->
     <div class="camaron-container">
@@ -76,5 +100,35 @@
     </div>
 
     <a href="main.html" class="boton-volver">Volver al Álbum</a>
+
+    <script>
+        const musica = document.getElementById('musicaFondo');
+        let musicaActiva = false;
+
+        function toggleMusica() {
+            const boton = document.querySelector('.boton-musica');
+            if(musicaActiva) {
+                musica.pause();
+                boton.innerHTML = '🎵 Activar Música';
+                musicaActiva = false;
+            } else {
+                musica.play()
+                    .then(() => {
+                        boton.innerHTML = '🎵 Desactivar Música';
+                        musicaActiva = true;
+                    })
+                    .catch(error => {
+                        console.log('Error al reproducir: ', error);
+                        alert('Haz clic primero en cualquier parte de la página para activar el audio');
+                    });
+            }
+        }
+
+        // Permitir la reproducción después de cualquier interacción del usuario
+        document.addEventListener('click', function inicializarAudio() {
+            musica.muted = false; // Desactivar muteo automático de algunos navegadores
+            document.removeEventListener('click', inicializarAudio);
+        }, { once: true });
+    </script>
 </body>
 </html>
