@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Una pregunta importante</title>
+    <style>
+        :root {
+            --celeste: #87CEEB;
+            --celeste-oscuro: #4682B4;
+        }
+
+        body {
+            font-family: 'Dancing Script', cursive;
+            background: linear-gradient(160deg, var(--celeste) 0%, #FFFFFF 100%);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .contenedor-principal {
+            text-align: center;
+            animation: aparecer 2s ease-in;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            color: var(--celeste-oscuro);
+            margin: 2rem;
+            text-shadow: 2px 2px 4px rgba(70, 130, 180, 0.3);
+        }
+
+        .botones-container {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .boton {
+            padding: 1rem 2rem;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .boton-si {
+            background-color: var(--celeste);
+            color: white;
+        }
+
+        .boton-si:hover {
+            background-color: var(--celeste-oscuro);
+            transform: scale(1.1);
+        }
+
+        .boton-no {
+            background-color: white;
+            color: var(--celeste-oscuro);
+            border: 2px solid var(--celeste);
+            position: relative;
+            transition: all 0.1s;
+        }
+
+        .boton-no:hover {
+            transform: scale(0.95);
+            background-color: #f0f8ff;
+        }
+
+        .boton-musica {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            padding: 12px 25px;
+            background: rgba(135, 206, 235, 0.3);
+            border: 2px solid var(--celeste-oscuro);
+            color: var(--celeste-oscuro);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        @keyframes aparecer {
+            0% { opacity: 0; transform: translateY(50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .camaron {
+            position: absolute;
+            font-size: 2rem;
+            animation: caer 3s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes caer {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <audio id="musicaFondo" loop>
+        <source src="Niagara.mp3" type="audio/mpeg">
+    </audio>
+
+    <button class="boton-musica" onclick="toggleMusica()">🎵 Activar Música</button>
+
+    <div class="contenedor-principal">
+        <h1>¿Puedo ser tu enamorado? 💙</h1>
+        <div class="botones-container">
+            <a href="si.html" class="boton boton-si">¡Sí!</a>
+            <button class="boton boton-no" id="btnNo">No</button>
+        </div>
+    </div>
+
+    <script>
+        const musica = document.getElementById('musicaFondo');
+        let musicaActiva = false;
+        const btnNo = document.getElementById('btnNo');
+
+        // Función para el botón No
+        btnNo.addEventListener('click', function() {
+            if(this.innerText === 'No') {
+                this.style.transform = 'scale(0)';
+                setTimeout(() => {
+                    this.innerText = '¡Sí!';
+                    this.style.backgroundColor = 'var(--celeste)';
+                    this.style.border = 'none';
+                    this.style.color = 'white';
+                    this.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                window.location.href = 'si.html';
+            }
+        });
+
+        // Efecto de camarones al pasar el mouse
+        document.addEventListener('mousemove', function(e) {
+            if(Math.random() < 0.3) {
+                const camaron = document.createElement('div');
+                camaron.className = 'camaron';
+                camaron.innerHTML = '🦐';
+                camaron.style.left = e.pageX + 'px';
+                camaron.style.top = e.pageY + 'px';
+                document.body.appendChild(camaron);
+                
+                setTimeout(() => camaron.remove(), 3000);
+            }
+        });
+
+        // Control de música
+        function toggleMusica() {
+            const boton = document.querySelector('.boton-musica');
+            if(musicaActiva) {
+                musica.pause();
+                boton.innerHTML = '🎵 Activar Música';
+                musicaActiva = false;
+            } else {
+                musica.play()
+                    .then(() => {
+                        boton.innerHTML = '🎵 Desactivar Música';
+                        musicaActiva = true;
+                    })
+                    .catch(error => {
+                        console.log('Error al reproducir: ', error);
+                        alert('Haz clic primero en cualquier parte de la página para activar el audio');
+                    });
+            }
+        }
+
+        document.addEventListener('click', function inicializarAudio() {
+            musica.muted = false;
+            document.removeEventListener('click', inicializarAudio);
+        }, { once: true });
+    </script>
+</body>
+</html>
