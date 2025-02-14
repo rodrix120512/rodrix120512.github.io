@@ -25,7 +25,7 @@
         .contenedor-principal {
             text-align: center;
             animation: aparecer 2s ease-in;
-            padding-top: 4rem; /* Ajuste para que no tape el botón de música */
+            padding-top: 4rem; /* Ajuste para que no tape el contenido */
             padding-bottom: 3rem; /* Para asegurar que no se corte el contenido al final */
             position: relative;
         }
@@ -81,34 +81,6 @@
             object-fit: cover;
         }
 
-        .boton-retroceder, .boton-musica {
-            position: absolute;
-            background-color: var(--celeste);
-            color: white;
-            padding: 1rem 2rem;
-            font-size: 1.2rem;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Dancing Script', cursive;
-        }
-
-        .boton-retroceder {
-            bottom: 20px;
-            right: 20px;
-        }
-
-        .boton-musica {
-            top: 20px;
-            left: 20px;
-        }
-
-        .boton-retroceder:hover, .boton-musica:hover {
-            background-color: var(--celeste-oscuro);
-            transform: scale(1.1);
-        }
-
         .album-container::-webkit-scrollbar {
             width: 8px;
         }
@@ -125,10 +97,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
-
-    <!-- Botón de música y regreso -->
-    <button class="boton-musica" id="btnMusica" onclick="toggleMusica()">🎵 Música</button>
-    <a href="index.html" class="boton-retroceder">⬅️ Regresar</a>
 
     <div class="contenedor-principal">
         <h1>Rodrigo y Emilia 💙</h1>
@@ -155,30 +123,6 @@
     </div>
 
     <script>
-        // Código para la música
-        let musica = new Audio('AlgoContigo.mp3');
-        musica.loop = true;
-        let musicaActiva = false;
-
-        function toggleMusica() {
-            const boton = document.getElementById('btnMusica');
-            if (musicaActiva) {
-                musica.pause();
-                boton.innerHTML = '🎵 Música';
-                musicaActiva = false;
-            } else {
-                musica.play()
-                    .then(() => {
-                        boton.innerHTML = '🎵 Detener Música';
-                        musicaActiva = true;
-                    })
-                    .catch(error => {
-                        console.log('Error al reproducir: ', error);
-                        alert('Haz clic primero en cualquier parte de la página para activar el audio');
-                    });
-            }
-        }
-
         // Función para ampliar o reducir la imagen
         function toggleImage(element) {
             const img = element.querySelector('img');
