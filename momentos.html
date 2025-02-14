@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rodrigo y Emilia</title>
+    <style>
+        :root {
+            --celeste: #87CEEB;
+            --celeste-oscuro: #4682B4;
+        }
+
+        body {
+            font-family: 'Dancing Script', cursive;
+            background: linear-gradient(160deg, var(--celeste) 0%, #FFFFFF 100%);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .contenedor-principal {
+            text-align: center;
+            animation: aparecer 2s ease-in;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            color: var(--celeste-oscuro);
+            margin: 2rem;
+            text-shadow: 2px 2px 4px rgba(70, 130, 180, 0.3);
+        }
+
+        .album-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+        }
+
+        .album-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .album-item:hover {
+            transform: scale(1.05);
+        }
+
+        .album-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+        }
+
+        .album-item p {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+        }
+
+        .boton-retroceder {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--celeste);
+            color: white;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .boton-retroceder:hover {
+            background-color: var(--celeste-oscuro);
+            transform: scale(1.1);
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <a href="index.html" class="boton-retroceder">⬅️ Regresar</a>
+
+    <div class="contenedor-principal">
+        <h1>Rodrigo y Emilia 💙</h1>
+        <div class="album-container">
+            <div class="album-item">
+                <img src="foto1.jpg" alt="Foto 1">
+                <p>Un día perfecto en la playa</p>
+            </div>
+            <div class="album-item">
+                <img src="foto2.jpg" alt="Foto 2">
+                <p>El atardecer que nunca olvidaremos</p>
+            </div>
+            <div class="album-item">
+                <img src="foto3.jpg" alt="Foto 3">
+                <p>Un abrazo lleno de amor</p>
+            </div>
+            <div class="album-item">
+                <img src="foto4.jpg" alt="Foto 4">
+                <p>Un viaje increíble juntos</p>
+            </div>
+            <div class="album-item">
+                <img src="foto5.jpg" alt="Foto 5">
+                <p>Momentos de risas y felicidad</p>
+            </div>
+            <div class="album-item">
+                <img src="foto6.jpg" alt="Foto 6">
+                <p>Un recuerdo de nuestro primer año juntos</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
