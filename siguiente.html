@@ -41,7 +41,7 @@
             margin-top: 2rem;
         }
 
-        .boton {
+        .boton-comun {
             padding: 1rem 2rem;
             font-size: 1.5rem;
             border: none;
@@ -49,6 +49,8 @@
             cursor: pointer;
             transition: all 0.3s;
             font-family: 'Dancing Script', cursive;
+            display: inline-block;
+            margin-top: 10px; /* Añadido margen superior */
         }
 
         .boton-si {
@@ -67,6 +69,8 @@
             border: 2px solid var(--celeste);
             position: relative;
             transition: all 0.1s;
+            margin-top: 10px; /* Añadido margen superior para mover el botón */
+            margin-left: 20px; /* Añadido margen izquierdo para separarlo */
         }
 
         .boton-no:hover {
@@ -149,7 +153,7 @@
         <h1>¿Quieres ser mi enamorada? 💙</h1>
         <div class="botones-container">
             <button class="boton-comun boton-si" onclick="window.location.href='enamorados.html'">¡Sí!</button>
-            <button class="boton boton-no" id="btnNo">No</button>
+            <button class="boton-comun boton-no" id="btnNo">No</button>
         </div>
     </div>
 
