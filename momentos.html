@@ -19,13 +19,15 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
         .contenedor-principal {
             text-align: center;
             animation: aparecer 2s ease-in;
+            padding-top: 4rem; /* Ajuste para que no tape el botón de música */
             padding-bottom: 3rem; /* Para asegurar que no se corte el contenido al final */
+            position: relative;
         }
 
         h1 {
@@ -43,8 +45,8 @@
             max-width: 1200px;
             margin: 0 auto;
             transition: all 0.3s ease;
-            overflow-y: auto; /* Permite desplazarse verticalmente */
-            max-height: 80vh; /* Limita la altura para habilitar el scroll */
+            overflow-y: auto;
+            max-height: 80vh;
             scrollbar-width: thin;
         }
 
@@ -65,12 +67,22 @@
             width: 100%;
             height: auto;
             border-radius: 15px;
+            transition: transform 0.3s ease;
         }
 
-        .boton-retroceder {
+        .album-item img.expanded {
+            transform: scale(2); /* Para ampliar la foto al hacer clic */
             position: absolute;
-            bottom: 20px;
-            right: 20px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            object-fit: cover;
+        }
+
+        .boton-retroceder, .boton-musica {
+            position: absolute;
             background-color: var(--celeste);
             color: white;
             padding: 1rem 2rem;
@@ -82,12 +94,21 @@
             font-family: 'Dancing Script', cursive;
         }
 
-        .boton-retroceder:hover {
+        .boton-retroceder {
+            bottom: 20px;
+            right: 20px;
+        }
+
+        .boton-musica {
+            top: 20px;
+            left: 20px;
+        }
+
+        .boton-retroceder:hover, .boton-musica:hover {
             background-color: var(--celeste-oscuro);
             transform: scale(1.1);
         }
 
-        /* Estilo de scroll */
         .album-container::-webkit-scrollbar {
             width: 8px;
         }
@@ -105,31 +126,70 @@
 </head>
 <body>
 
+    <button class="boton-musica" onclick="toggleMusica()">🎵 Música</button>
     <a href="index.html" class="boton-retroceder">⬅️ Regresar</a>
 
     <div class="contenedor-principal">
         <h1>Rodrigo y Emilia 💙</h1>
         <div class="album-container">
-            <div class="album-item">
+            <div class="album-item" onclick="toggleImage(this)">
                 <img src="foto1.jpg" alt="Foto 1">
             </div>
-            <div class="album-item">
+            <div class="album-item" onclick="toggleImage(this)">
                 <img src="foto2.jpg" alt="Foto 2">
             </div>
-            <div class="album-item">
+            <div class="album-item" onclick="toggleImage(this)">
                 <img src="foto3.jpg" alt="Foto 3">
             </div>
-            <div class="album-item">
+            <div class="album-item" onclick="toggleImage(this)">
                 <img src="foto4.jpg" alt="Foto 4">
             </div>
-            <div class="album-item">
+            <div class="album-item" onclick="toggleImage(this)">
                 <img src="foto5.jpg" alt="Foto 5">
             </div>
-            <div class="album-item">
+            <div class="album-item" onclick="toggleImage(this)">
                 <img src="foto6.jpg" alt="Foto 6">
             </div>
         </div>
     </div>
+
+    <script>
+        const musica = new Audio('Niagara.mp3');
+        musica.loop = true;
+        let musicaActiva = false;
+
+        function toggleMusica() {
+            const boton = document.querySelector('.boton-musica');
+            if(musicaActiva) {
+                musica.pause();
+                boton.innerHTML = '🎵 Música';
+                musicaActiva = false;
+            } else {
+                musica.play()
+                    .then(() => {
+                        boton.innerHTML = '🎵 Detener Música';
+                        musicaActiva = true;
+                    })
+                    .catch(error => {
+                        console.log('Error al reproducir: ', error);
+                        alert('Haz clic primero en cualquier parte de la página para activar el audio');
+                    });
+            }
+        }
+
+        function toggleImage(element) {
+            const img = element.querySelector('img');
+            if (img.classList.contains('expanded')) {
+                img.classList.remove('expanded');
+            } else {
+                // Remover la clase 'expanded' de cualquier otra imagen
+                document.querySelectorAll('.album-item img').forEach(image => {
+                    image.classList.remove('expanded');
+                });
+                img.classList.add('expanded');
+            }
+        }
+    </script>
 
 </body>
 </html>
