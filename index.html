@@ -29,9 +29,12 @@
         .texto-camaron {
             font-size: 8vw;
             color: var(--celeste-oscuro);
-            margin: 20px;
+            margin: 10px;
             animation: flotar 3s ease-in-out infinite;
             text-shadow: 2px 2px 4px rgba(70, 130, 180, 0.3);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: aparecer 1s ease-out forwards, flotar 3s ease-in-out infinite 1s;
         }
 
         @keyframes flotar {
@@ -39,9 +42,24 @@
             50% { transform: translateY(-20px); }
         }
 
-        .boton-volver {
+        @keyframes aparecer {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes caerCamaron {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .emoji-camaron {
+            position: absolute;
+            font-size: 2rem;
+            animation: caerCamaron 3s linear infinite;
+        }
+
+        .boton {
             position: fixed;
-            bottom: 30px;
             padding: 15px 30px;
             background: rgba(135, 206, 235, 0.3);
             border: 2px solid var(--celeste-oscuro);
@@ -50,64 +68,67 @@
             cursor: pointer;
             transition: all 0.3s;
             text-decoration: none;
+            font-size: 1rem;
         }
 
-        .boton-volver:hover {
+        .boton:hover {
             background: var(--celeste-oscuro);
             color: white;
             transform: scale(1.05);
         }
 
-        /* Estilos para el botón de música */
         .boton-musica {
-            position: fixed;
             bottom: 30px;
             left: 30px;
-            padding: 12px 25px;
-            background: rgba(135, 206, 235, 0.3);
-            border: 2px solid var(--celeste-oscuro);
-            color: var(--celeste-oscuro);
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s;
-            z-index: 1000;
         }
 
-        .boton-musica:hover {
-            background: var(--celeste-oscuro);
-            color: white;
-            transform: scale(1.05);
+        .boton-avanzar {
+            top: 30px;
+            right: 30px;
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Reproductor oculto -->
     <audio id="musicaFondo" loop>
         <source src="Dos Oruguitas.mp3" type="audio/mpeg">
         Tu navegador no soporta audio HTML5
     </audio>
 
-    <!-- Botón de activación de música -->
-    <button class="boton-musica" onclick="toggleMusica()">🎵 Activar Música</button>
+    <button class="boton boton-musica" onclick="toggleMusica()" aria-label="Activar música">🎵 Activar Música</button>
+    <a href="siguiente.html" class="boton boton-avanzar" aria-label="Avanzar">Avanzar</a>
 
-    <!-- Contenido principal -->
-    <div class="camaron-container">
-        <div class="texto-camaron">CAMARÓN</div>
-        <div class="texto-camaron">CAMARÓN</div>
-        <div class="texto-camaron">CAMARÓN</div>
-        <div class="texto-camaron">CAMARÓN</div>
-    </div>
-
-    <a href="main.html" class="boton-volver">Volver al Álbum</a>
+    <div class="camaron-container" id="camaronContainer"></div>
 
     <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const container = document.getElementById("camaronContainer");
+            for (let i = 0; i < 4; i++) {
+                const texto = document.createElement("div");
+                texto.className = "texto-camaron";
+                texto.textContent = "CAMARÓN";
+                container.appendChild(texto);
+            }
+
+            function crearCamaron() {
+                const emoji = document.createElement("div");
+                emoji.className = "emoji-camaron";
+                emoji.textContent = "🦐";
+                emoji.style.left = Math.random() * window.innerWidth + "px";
+                emoji.style.animationDuration = (Math.random() * 3 + 2) + "s";
+                document.body.appendChild(emoji);
+                setTimeout(() => { emoji.remove(); }, 5000);
+            }
+
+            setInterval(crearCamaron, 500);
+        });
+
         const musica = document.getElementById('musicaFondo');
         let musicaActiva = false;
 
         function toggleMusica() {
             const boton = document.querySelector('.boton-musica');
-            if(musicaActiva) {
+            if (musicaActiva) {
                 musica.pause();
                 boton.innerHTML = '🎵 Activar Música';
                 musicaActiva = false;
@@ -124,9 +145,8 @@
             }
         }
 
-        // Permitir la reproducción después de cualquier interacción del usuario
         document.addEventListener('click', function inicializarAudio() {
-            musica.muted = false; // Desactivar muteo automático de algunos navegadores
+            musica.muted = false;
             document.removeEventListener('click', inicializarAudio);
         }, { once: true });
     </script>
