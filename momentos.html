@@ -25,6 +25,7 @@
         .contenedor-principal {
             text-align: center;
             animation: aparecer 2s ease-in;
+            padding-bottom: 3rem; /* Para asegurar que no se corte el contenido al final */
         }
 
         h1 {
@@ -42,6 +43,9 @@
             max-width: 1200px;
             margin: 0 auto;
             transition: all 0.3s ease;
+            overflow-y: auto; /* Permite desplazarse verticalmente */
+            max-height: 80vh; /* Limita la altura para habilitar el scroll */
+            scrollbar-width: thin;
         }
 
         .album-item {
@@ -93,6 +97,20 @@
             background-color: var(--celeste-oscuro);
             transform: scale(1.1);
         }
+
+        /* Estilo de scroll */
+        .album-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .album-container::-webkit-scrollbar-thumb {
+            background-color: rgba(70, 130, 180, 0.6);
+            border-radius: 10px;
+        }
+
+        .album-container::-webkit-scrollbar-track {
+            background-color: #f0f0f0;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 </head>
@@ -132,3 +150,4 @@
 
 </body>
 </html>
+
