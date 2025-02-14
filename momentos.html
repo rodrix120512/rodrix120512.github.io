@@ -127,7 +127,7 @@
 <body>
 
     <!-- Botón de música y regreso -->
-    <button class="boton-musica" onclick="toggleMusica()">🎵 Música</button>
+    <button class="boton-musica" id="btnMusica" onclick="toggleMusica()">🎵 Música</button>
     <a href="index.html" class="boton-retroceder">⬅️ Regresar</a>
 
     <div class="contenedor-principal">
@@ -156,12 +156,12 @@
 
     <script>
         // Código para la música
-        const musica = new Audio('AlgoContigo.mp3');
+        let musica = new Audio('AlgoContigo.mp3');
         musica.loop = true;
         let musicaActiva = false;
 
         function toggleMusica() {
-            const boton = document.querySelector('.boton-musica');
+            const boton = document.getElementById('btnMusica');
             if (musicaActiva) {
                 musica.pause();
                 boton.innerHTML = '🎵 Música';
