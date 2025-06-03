@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memoria Infinita</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --sepia: #e8dfd3;
+            --sepia-oscuro: #c5b9a8;
+            --marron: #8b6f47;
+            --marron-oscuro: #5d4a30;
+            --rojo: #a63d40;
+            --gris: #5c5c5c;
+            --blanco: #f8f5f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(135deg, var(--sepia) 0%, var(--blanco) 100%);
+            min-height: 100vh;
+            color: var(--marron-oscuro);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none" stroke="%23c5b9a8" stroke-width="0.5" opacity="0.3"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .pagina {
+            display: none;
+            min-height: 100vh;
+            padding: 2rem;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .pagina.activa {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .encabezado {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-top: 3rem;
+        }
+
+        .encabezado h1 {
+            font-size: 3.5rem;
+            color: var(--marron-oscuro);
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(93, 74, 48, 0.1);
+            position: relative;
+            display: inline-block;
+        }
+
+        .encabezado h1::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 10%;
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--rojo), transparent);
+        }
+
+        .encabezado .subtitulo {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--gris);
+            margin-top: 0.5rem;
+        }
+
+        /* Estilos específicos para la página de inicio */
+        #inicio {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .carta-amor {
+            background-color: var(--blanco);
+            border: 1px solid var(--sepia-oscuro);
+            border-radius: 5px;
+            padding: 2rem;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(93, 74, 48, 0.1);
+            position: relative;
+            margin: 2rem auto;
+            transform-style: preserve-3d;
+            transform: perspective(1000px) rotateX(5deg);
+            transition: transform 0.5s ease;
+        }
+
+        .carta-amor:hover {
+            transform: perspective(1000px) rotateX(0deg);
+        }
+
+        .carta-amor::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--rojo), var(--marron-oscuro), var(--rojo));
+        }
+
+        .carta-amor .fecha {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-style: italic;
+            color: var(--gris);
+        }
+
+        .carta-amor .saludo {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--rojo);
+            font-weight: bold;
+        }
+
+        .carta-amor p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            text-align: left;
+            text-indent: 2rem;
+        }
+
+        .carta-amor .firma {
+            text-align: right;
+            font-style: italic;
+            font-size: 1.4rem;
+            margin-top: 2rem;
+            color: var(--marron-oscuro);
+            position: relative;
+            display: inline-block;
+            padding-right: 60px;
+        }
+
+        .carta-amor .firma::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            bottom: -10px;
+            width: 50px;
+            height: 2px;
+            background-color: var(--rojo);
+        }
+
+        .boton-avanzar {
+            background: linear-gradient(135deg, var(--marron-oscuro), var(--rojo));
+            color: white;
+            padding: 1rem 3rem;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            font-family: 'Crimson Text', serif;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(166, 61, 64, 0.3);
+            position: relative;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+
+        .boton-avanzar::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .boton-avanzar:hover::before {
+            left: 100%;
+        }
+
+        .boton-avanzar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(166, 61, 64, 0.4);
+        }
+
+        /* Estilos para la página de la pregunta */
+        .pregunta-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 70vh;
+        }
+
+        .pregunta-box {
+            background: var(--blanco);
+            border-radius: 10px;
+            padding: 3rem;
+            box-shadow: 0 15px 35px rgba(93, 74, 48, 0.15);
+            text-align: center;
+            max-width: 600px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--sepia-oscuro);
+            transform: scale(0.95);
+            animation: pulse 3s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); }
+            50% { transform: scale(1); }
+            100% { transform: scale(0.95); }
+        }
+
+        .pregunta-box::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--rojo), var(--marron-oscuro));
+        }
+
+        .pregunta-box h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--marron-oscuro);
+            position: relative;
+        }
+
+        .pregunta-box h2::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 25%;
+            width: 50%;
+            height: 2px;
+            background: var(--rojo);
+        }
+
+        .botones-container {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .boton-comun {
+            padding: 1rem 2.5rem;
+            font-size: 1.4rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            font-family: 'Crimson Text', serif;
+            min-width: 150px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(93, 74, 48, 0.1);
+            letter-spacing: 1px;
+        }
+
+        .boton-comun::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: 0.5s;
+        }
+
+        .boton-comun:hover::before {
+            left: 100%;
+        }
+
+        .boton-si {
+            background: linear-gradient(135deg, var(--marron-oscuro), var(--rojo));
+            color: white;
+            z-index: 2;
+        }
+
+        .boton-no {
+            background: var(--blanco);
+            color: var(--marron-oscuro);
+            border: 2px solid var(--sepia-oscuro);
+        }
+
+        .boton-no:hover {
+            background: var(--sepia);
+        }
+
+        /* Estilos para la página de momentos */
+        .album-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .album-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(93, 74, 48, 0.15);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: transform 0.5s ease, opacity 0.5s ease, box-shadow 0.3s ease;
+            height: 350px;
+            cursor: pointer;
+            background: var(--blanco);
+            border: 1px solid var(--sepia-oscuro);
+        }
+
+        .album-item.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .album-item:hover {
+            box-shadow: 0 15px 40px rgba(166, 61, 64, 0.25);
+            transform: translateY(-10px);
+        }
+
+        .album-img {
+            width: 100%;
+            height: 70%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            border-bottom: 1px solid var(--sepia-oscuro);
+        }
+
+        .album-item:hover .album-img {
+            transform: scale(1.05);
+        }
+
+        .album-info {
+            padding: 1.5rem;
+            height: 30%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .album-titulo {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--marron-oscuro);
+            margin-bottom: 0.5rem;
+        }
+
+        .album-fecha {
+            font-style: italic;
+            color: var(--gris);
+            font-size: 0.9rem;
+        }
+
+        .album-desc {
+            color: var(--gris);
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            line-height: 1.4;
+        }
+
+        /* Estilos para la página de confirmación */
+        .confirmacion-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            text-align: center;
+        }
+
+        .corazon-animado {
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(135deg, var(--rojo), #d44);
+            margin: 2rem auto;
+            position: relative;
+            transform: rotate(-45deg);
+            animation: latido 1.2s infinite;
+            box-shadow: 0 0 50px rgba(166, 61, 64, 0.5);
+        }
+
+        .corazon-animado::before,
+        .corazon-animado::after {
+            content: "";
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(135deg, var(--rojo), #d44);
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .corazon-animado::before {
+            top: -90px;
+            left: 0;
+        }
+
+        .corazon-animado::after {
+            top: 0;
+            left: 90px;
+        }
+
+        @keyframes latido {
+            0% { transform: rotate(-45deg) scale(0.9); }
+            5% { transform: rotate(-45deg) scale(1); }
+            10% { transform: rotate(-45deg) scale(0.9); }
+            15% { transform: rotate(-45deg) scale(1); }
+            50% { transform: rotate(-45deg) scale(0.9); }
+            100% { transform: rotate(-45deg) scale(0.9); }
+        }
+
+        .mensaje-confirmacion {
+            font-size: 2.2rem;
+            color: var(--marron-oscuro);
+            max-width: 800px;
+            line-height: 1.6;
+            margin: 3rem 0;
+            position: relative;
+        }
+
+        .mensaje-confirmacion::before,
+        .mensaje-confirmacion::after {
+            content: """;
+            font-size: 4rem;
+            color: var(--rojo);
+            position: absolute;
+            opacity: 0.5;
+        }
+
+        .mensaje-confirmacion::before {
+            top: -30px;
+            left: -40px;
+        }
+
+        .mensaje-confirmacion::after {
+            bottom: -50px;
+            right: -40px;
+            transform: rotate(180deg);
+        }
+
+        .foto-confirmacion {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 20px 40px rgba(93, 74, 48, 0.25);
+            border: 8px solid var(--blanco);
+            margin: 2rem 0;
+        }
+
+        /* Navegación */
+        .navegacion {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            background: rgba(248, 245, 240, 0.9);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            box-shadow: 0 5px 20px rgba(93, 74, 48, 0.2);
+            z-index: 100;
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--sepia-oscuro);
+        }
+
+        .boton-nav {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--blanco);
+            color: var(--marron-oscuro);
+            border: 2px solid var(--sepia-oscuro);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .boton-nav:hover {
+            background: linear-gradient(135deg, var(--marron-oscuro), var(--rojo));
+            color: white;
+            transform: translateY(-5px);
+        }
+
+        .boton-nav.activo {
+            background: linear-gradient(135deg, var(--marron-oscuro), var(--rojo));
+            color: white;
+        }
+
+        .boton-nav i {
+            pointer-events: none;
+        }
+
+        /* Reproductor de música */
+        .reproductor-musica {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(248, 245, 240, 0.9);
+            padding: 1rem;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 5px 15px rgba(93, 74, 48, 0.15);
+            z-index: 100;
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--sepia-oscuro);
+        }
+
+        .boton-musica {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--blanco);
+            color: var(--marron-oscuro);
+            border: 2px solid var(--sepia-oscuro);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .boton-musica:hover {
+            background: linear-gradient(135deg, var(--marron-oscuro), var(--rojo));
+            color: white;
+        }
+
+        .info-musica {
+            max-width: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            transition: max-width 0.5s ease;
+            font-style: italic;
+            color: var(--gris);
+        }
+
+        .reproductor-musica:hover .info-musica {
+            max-width: 200px;
+        }
+
+        /* Modal para fotos */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(93, 74, 48, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.mostrar {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-contenido {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            background: var(--blanco);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-img {
+            width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+        }
+
+        .modal-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .modal-titulo {
+            font-size: 1.5rem;
+            color: var(--marron-oscuro);
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-desc {
+            color: var(--gris);
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cerrar-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--rojo);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .cerrar-modal:hover {
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        /* Decoraciones */
+        .decoracion {
+            position: absolute;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .decoracion.flor {
+            font-size: 2rem;
+            color: rgba(166, 61, 64, 0.2);
+            animation: caer 15s linear infinite;
+        }
+
+        @keyframes caer {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .encabezado h1 {
+                font-size: 2.5rem;
+            }
+            
+            .carta-amor {
+                padding: 1.5rem;
+            }
+            
+            .botones-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .album-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .navegacion {
+                padding: 0.8rem 1.5rem;
+            }
+            
+            .boton-nav {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+            
+            .mensaje-confirmacion {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Reproductor de música -->
+    <div class="reproductor-musica">
+        <div class="boton-musica" id="btnMusica">
+            <i class="fas fa-music"></i>
+        </div>
+        <div class="info-musica">Niagara - Música de Amor</div>
+    </div>
+
+    <!-- Navegación -->
+    <div class="navegacion">
+        <div class="boton-nav activo" data-target="inicio">
+            <i class="fas fa-home"></i>
+        </div>
+        <div class="boton-nav" data-target="pregunta">
+            <i class="fas fa-question-circle"></i>
+        </div>
+        <div class="boton-nav" data-target="momentos">
+            <i class="fas fa-images"></i>
+        </div>
+        <div class="boton-nav" data-target="confirmacion">
+            <i class="fas fa-heart"></i>
+        </div>
+    </div>
+
+    <!-- Páginas -->
+    <div id="inicio" class="pagina activa">
+        <div class="encabezado">
+            <h1>Memoria Infinita</h1>
+            <div class="subtitulo">Una historia de amor eterno</div>
+        </div>
+        
+        <div class="carta-amor">
+            <div class="fecha">3 de Junio, 2025</div>
+            <div class="saludo">Querida Emilia,</div>
+            
+            <p>
+                Hay momentos en la vida que se graban en nuestra memoria con una intensidad que desafía el paso del tiempo. 
+                Como Paulina y Augusto en "La Memoria Infinita", nuestro amor ha tejido sus propios recuerdos, 
+                sus propias historias que merecen ser atesoradas para siempre.
+            </p>
+            
+            <p>
+                Cada risa compartida, cada mirada cómplice, cada silencio elocuente ha sido un capítulo en este libro 
+                que seguimos escribiendo juntos. En la fragilidad de la memoria humana, he encontrado en ti la fortaleza 
+                que da sentido a cada día.
+            </p>
+            
+            <p>
+                Este álbum es más que una colección de momentos; es un testimonio de lo que hemos construido, 
+                de los sueños que hemos cultivado y de la promesa de un mañana que sólo adquiere significado 
+                porque lo viviremos juntos.
+            </p>
+            
+            <div class="firma">Con todo mi amor,<br>Rodrigo</div>
+        </div>
+        
+        <button class="boton-avanzar" id="btnAvanzar">Continuar Nuestra Historia</button>
+    </div>
+
+    <div id="pregunta" class="pagina">
+        <div class="encabezado">
+            <h1>Un Nuevo Capítulo</h1>
+            <div class="subtitulo">La pregunta que cambiará nuestra historia</div>
+        </div>
+        
+        <div class="pregunta-container">
+            <div class="pregunta-box">
+                <h2>¿Aceptas seguir escribiendo nuestra memoria infinita juntos?</h2>
+                <div class="botones-container">
+                    <button class="boton-comun boton-si" id="btnSi">¡Sí, Por Siempre!</button>
+                    <button class="boton-comun boton-no" id="btnNo">Todavía no</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="momentos" class="pagina">
+        <div class="encabezado">
+            <h1>Nuestra Memoria Compartida</h1>
+            <div class="subtitulo">Los momentos que han definido nuestro amor</div>
+        </div>
+        
+        <div class="album-container" id="albumContainer">
+            <!-- Las tarjetas de momentos se generarán con JavaScript -->
+        </div>
+    </div>
+
+    <div id="confirmacion" class="pagina">
+        <div class="encabezado">
+            <h1>Para Siempre</h1>
+            <div class="subtitulo">El comienzo de nuestra eternidad</div>
+        </div>
+        
+        <div class="confirmacion-container">
+            <div class="corazon-animado"></div>
+            
+            <div class="mensaje-confirmacion">
+                "Como Paulina y Augusto, nuestro amor trasciende el tiempo. 
+                Juntos crearemos una memoria infinita que ningún olvido podrá borrar."
+            </div>
+            
+            <img src="https://images.unsplash.com/photo-1530789253388-582c481c54b0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" 
+                 alt="Rodrigo y Emilia" class="foto-confirmacion">
+        </div>
+    </div>
+
+    <!-- Modal para fotos -->
+    <div class="modal" id="modalFoto">
+        <div class="modal-contenido">
+            <span class="cerrar-modal" id="cerrarModal">&times;</span>
+            <img src="" alt="" class="modal-img" id="modalImg">
+            <div class="modal-info">
+                <h3 class="modal-titulo" id="modalTitulo"></h3>
+                <p class="modal-desc" id="modalDesc"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio -->
+    <audio id="musicaFondo" loop>
+        <source src="Niagara.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementos del DOM
+            const paginas = document.querySelectorAll('.pagina');
+            const botonesNav = document.querySelectorAll('.boton-nav');
+            const btnMusica = document.getElementById('btnMusica');
+            const btnAvanzar = document.getElementById('btnAvanzar');
+            const btnSi = document.getElementById('btnSi');
+            const btnNo = document.getElementById('btnNo');
+            const albumContainer = document.getElementById('albumContainer');
+            const modal = document.getElementById('modalFoto');
+            const modalImg = document.getElementById('modalImg');
+            const modalTitulo = document.getElementById('modalTitulo');
+            const modalDesc = document.getElementById('modalDesc');
+            const cerrarModal = document.getElementById('cerrarModal');
+            const musica = document.getElementById('musicaFondo');
+            let musicaActiva = false;
+            
+            // Datos para el álbum de momentos
+            const momentos = [
+                {
+                    titulo: "Nuestro Primer Encuentro",
+                    fecha: "14 de Febrero, 2020",
+                    desc: "El día que nuestros caminos se cruzaron en aquella lluviosa tarde de invierno. Recuerdo tu sonrisa tímida y cómo el tiempo pareció detenerse.",
+                    img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80"
+                },
+                {
+                    titulo: "La Primera Cita",
+                    fecha: "28 de Febrero, 2020",
+                    desc: "Café bajo la lluvia y conversaciones interminables. Descubrí que contigo las horas pasaban en un instante.",
+                    img: "https://images.unsplash.com/photo-1509807995916-c332365e2d9e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80"
+                },
+                {
+                    titulo: "Viaje a la Montaña",
+                    fecha: "15 de Julio, 2020",
+                    desc: "Nuestra primera aventura juntos. Las montañas fueron testigos de nuestras risas y promesas bajo las estrellas.",
+                    img: "https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+                },
+                {
+                    titulo: "Celebrando un Año Juntos",
+                    fecha: "14 de Febrero, 2021",
+                    desc: "365 días de descubrir que el amor crece cada día cuando se comparte con la persona correcta.",
+                    img: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80"
+                },
+                {
+                    titulo: "Atardecer en la Playa",
+                    fecha: "10 de Agosto, 2021",
+                    desc: "El sol se ponía mientras caminábamos descalzos por la orilla, con las olas acariciando nuestros pies y el futuro brillando en tus ojos.",
+                    img: "https://images.unsplash.com/photo-1505228395891-9a51e7e86bf6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1633&q=80"
+                },
+                {
+                    titulo: "Noche de Estrellas",
+                    fecha: "5 de Diciembre, 2022",
+                    desc: "Acostados en el pasto, contando estrellas y compartiendo sueños. En ese momento supe que quería pasar todas mis noches contigo.",
+                    img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1194&q=80"
+                }
+            ];
+            
+            // Crear decoraciones florales
+            function crearDecoraciones() {
+                const decoracionContainer = document.body;
+                for (let i = 0; i < 15; i++) {
+                    const flor = document.createElement('div');
+                    flor.className = 'decoracion flor';
+                    flor.innerHTML = '❀';
+                    flor.style.left = Math.random() * 100 + 'vw';
+                    flor.style.animationDelay = Math.random() * 15 + 's';
+                    flor.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                    decoracionContainer.appendChild(flor);
+                }
+            }
+            
+            // Generar tarjetas de momentos
+            function generarAlbum() {
+                albumContainer.innerHTML = '';
+                momentos.forEach((momento, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'album-item';
+                    item.innerHTML = `
+                        <img src="${momento.img}" alt="${momento.titulo}" class="album-img">
+                        <div class="album-info">
+                            <div class="album-titulo">${momento.titulo}</div>
+                            <div class="album-fecha">${momento.fecha}</div>
+                            <div class="album-desc">${momento.desc}</div>
+                        </div>
+                    `;
+                    
+                    item.addEventListener('click', () => {
+                        modalImg.src = momento.img;
+                        modalTitulo.textContent = momento.titulo;
+                        modalDesc.textContent = momento.desc;
+                        modal.classList.add('mostrar');
+                    });
+                    
+                    albumContainer.appendChild(item);
+                    
+                    // Animación de aparición con retraso
+                    setTimeout(() => {
+                        item.classList.add('visible');
+                    }, 200 * index);
+                });
+            }
+            
+            // Cambiar de página
+            function cambiarPagina(paginaId) {
+                paginas.forEach(pagina => {
+                    pagina.classList.remove('activa');
+                });
+                
+                document.getElementById(paginaId).classList.add('activa');
+                
+                // Actualizar botones de navegación
+                botonesNav.forEach(boton => {
+                    boton.classList.remove('activo');
+                    if (boton.dataset.target === paginaId) {
+                        boton.classList.add('activo');
+                    }
+                });
+                
+                // Generar álbum si es la página de momentos
+                if (paginaId === 'momentos') {
+                    generarAlbum();
+                }
+            }
+            
+            // Event listeners para navegación
+            botonesNav.forEach(boton => {
+                boton.addEventListener('click', () => {
+                    cambiarPagina(boton.dataset.target);
+                });
+            });
+            
+            // Botón avanzar
+            btnAvanzar.addEventListener('click', () => {
+                cambiarPagina('pregunta');
+            });
+            
+            // Botón Sí
+            btnSi.addEventListener('click', () => {
+                cambiarPagina('confirmacion');
+            });
+            
+            // Botón No (movimiento aleatorio)
+            btnNo.addEventListener('mouseover', () => {
+                btnNo.style.transform = `translate(${Math.random() * 200 - 100}px, ${Math.random() * 100 - 50}px)`;
+            });
+            
+            // Control de música
+            btnMusica.addEventListener('click', toggleMusica);
+            
+            function toggleMusica() {
+                if (musicaActiva) {
+                    musica.pause();
+                    musicaActiva = false;
+                } else {
+                    musica.play()
+                        .then(() => {
+                            musicaActiva = true;
+                        })
+                        .catch(error => {
+                            console.log('Error al reproducir: ', error);
+                            alert('Haz clic primero en cualquier parte de la página para activar el audio');
+                        });
+                }
+            }
+            
+            // Cerrar modal
+            cerrarModal.addEventListener('click', () => {
+                modal.classList.remove('mostrar');
+            });
+            
+            // Cerrar modal al hacer clic fuera
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('mostrar');
+                }
+            });
+            
+            // Inicialización
+            crearDecoraciones();
+        });
+    </script>
+</body>
+</html>
