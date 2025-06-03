@@ -890,7 +890,31 @@
                     fecha: "5 de Diciembre, 2025",
                     desc: "A",
                     img: "foto6.jpg"
-                }
+                },
+                {
+                    titulo: "oa",
+                    fecha: "5 de Diciembre, 2025",
+                    desc: "A",
+                    img: "foto6.jpg"
+                },
+                {
+                    titulo: "oa",
+                    fecha: "5 de Diciembre, 2025",
+                    desc: "A",
+                    img: "foto6.jpg"
+                },
+                {
+                    titulo: "oa",
+                    fecha: "5 de Diciembre, 2025",
+                    desc: "A",
+                    img: "foto6.jpg"
+                },
+                {
+                    titulo: "oa",
+                    fecha: "5 de Diciembre, 2025",
+                    desc: "A",
+                    img: "foto6.jpg"
+                },
                 
             ];
             
@@ -915,18 +939,16 @@
                     const item = document.createElement('div');
                     item.className = 'album-item';
                     item.innerHTML = `
-                        <img src="${momento.img}" alt="${momento.titulo}" class="album-img">
+                        <img src="${momento.img}" alt="Nuestro momento" class="album-img">
                         <div class="album-info">
-                            <div class="album-titulo">${momento.titulo}</div>
                             <div class="album-fecha">${momento.fecha}</div>
-                            <div class="album-desc">${momento.desc}</div>
                         </div>
                     `;
                     
                     item.addEventListener('click', () => {
                         modalImg.src = momento.img;
-                        modalTitulo.textContent = momento.titulo;
-                        modalDesc.textContent = momento.desc;
+                        modalTitulo.textContent = momento.fecha; // Mostramos solo la fecha en el modal
+                        modalDesc.textContent = ""; // Sin descripción
                         modal.classList.add('mostrar');
                     });
                     
